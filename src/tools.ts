@@ -10,7 +10,7 @@ import { untrusted, UNTRUSTED_NOTE } from "./core/untrusted.js";
 import { IntentEnum, type Classification, type Intent, type IntentClassifier } from "./jev.js";
 
 export const ROLES: RoleTable = {
-  employee: ["pc.self.read", "pc.policy.read", "pc.adapters.read", "pc.transfer.propose", "pc.transfer.commit", "pc.pbp.propose", "pc.pbp.commit"],
+  employee: ["pc.workday.read", "pc.workday.propose", "pc.workday.commit", "pc.self.read", "pc.policy.read", "pc.adapters.read", "pc.transfer.propose", "pc.transfer.commit", "pc.pbp.propose", "pc.pbp.commit"],
   readonly: ["pc.self.read", "pc.policy.read", "pc.adapters.read"],
   transfer_freeze: ["!pc.transfer.commit"],
 };
