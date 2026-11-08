@@ -8,7 +8,12 @@ description: Workday MCP skill. Use when an employee asks about their own benefi
 Internal People Agent runs as a Workday MCP server; this skill drives it. Fixture mode by default; it does not claim a live Workday connection.
 
 ## Setup
-Connect the `internal-people-agent` MCP server (see README quick start). Call `list_hr_adapters` first and tell the user which domains are fixture-only. Do not describe fixture data as their real records.
+Connect the `internal-people-agent` MCP server (see README quick start). Call `list_hr_adapters` first. Tell the user which capabilities are gated and why. If `exampleData` is true, say the records are examples, not theirs.
+
+## Decision chain (start here)
+1. Call `start_decision_chain` with the question and your `intent` (benefits_question, equity_question, policy_question, team_transfer, pbp_help, out_of_scope). If the server uses Jev it classifies instead; if a step says `needs_user`, ask the user to clarify.
+2. Use the returned `answerPack` and `nextTools`. Pass `decisionChainId` to preview and commit tools so the chain records them.
+3. Show the user the chain steps when they ask why something happened.
 
 ## Answering questions
 1. Call `build_answer_pack` with the question and topics (benefits, equity, policy).
@@ -20,7 +25,7 @@ Connect the `internal-people-agent` MCP server (see README quick start). Call `l
 ## Team transfer
 1. `check_my_transfer_eligibility` for the position. Explain each failed rule with its citation.
 2. `preview_team_transfer_request`. Show `exactRequest` and `whatHappensNext` in full.
-3. Only after the user clearly confirms, call `commit_team_transfer_request` with `confirm: true`, the token and a new idempotency key. Say it is now pending approval, not done.
+3. Only after the user clearly confirms, call `commit_team_transfer_request` with `confirm: true`, the token and a new idempotency key. Say it is now pending approval, not done. If the status is `unknown`, call `reconcile_my_transfer_request` and do not resubmit.
 4. If the user changes anything, preview again.
 
 ## PBP handoff

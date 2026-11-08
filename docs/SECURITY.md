@@ -1,14 +1,12 @@
-# Security model
+# Security: Internal People Agent | Workday MCP
 
-- **Identity from the session, never from arguments.** Tool schemas are strict and contain no user, tenant or employee id. Extra keys are rejected.
-- **Fixture identity is not authentication.** `FIXTURE_USER` selects an example record for local testing. `MODE=live` exits at startup because per-user sign-in is not implemented. There is no shared service-token fallback.
-- **Least privilege tool lists.** Each caller sees only the tools their roles allow; deny wins.
-- **Own data only.** Reads return the caller's records; positions and policies are filtered to the caller's tenant; stored proposals and handoffs check owner tenant and user.
-- **Human confirmation for every write.** Preview then commit with a bound, single-use token and `confirm: true`. Commits create requests for approval; nothing completes a transfer.
-- **PBP handoff is minimal and consented.** Only fields the user lists are included; benefit and equity fields also need explicit consent; emails and phone numbers are stripped from the message; nothing leaves before confirm. In fixture mode, confirm writes to a local outbox only.
-- **Untrusted text.** Policy passages and the user's question are returned as `{ untrusted: true, text }`. No tool reads roles, approvals or instructions from content. Tests include an injected instruction in a policy.
-- **Audit.** Each call is logged with free text, names and secrets redacted (`AUDIT_LOG_PATH`, file mode 0600).
-- **No outbound calls.** The fixture runner makes no network requests (tested by stubbing `fetch`).
-- **Not advice.** Answers carry a disclaimer and cite sources and dates.
-
-Report issues privately to the repository owner.
+- **Identity.** Live: the caller is the worker the upstream Workday MCP server reports for the user's own token (`identity` capability). Fixture: `FIXTURE_USER`, refused in live. No tool accepts user, tenant or worker ids; unknown keys are rejected.
+- **No shared credentials.** The token file is the user's own (stdio is one process per user), must be `chmod 600`, and is never logged. There is no fallback token.
+- **Roles.** From `ROLE_MAP_PATH` per `tenant:worker`; no entry means no access. Deny wins. Tool lists are filtered per caller. `DISABLED_TOOLS` and `DISABLED_CAPABILITIES` are kill switches.
+- **Allowlist.** Only capabilities in `src/capabilities.ts`, each mapped to one verified upstream tool with fixed argument mapping. Responses are schema-validated and stripped.
+- **Writes.** Preview then commit, bound and single-use, `confirm: true`, idempotency key, durable outcome, unknown outcomes never auto-retried. Transfers start a business process only.
+- **PBP handoff.** Only fields the user lists; benefit and equity fields need explicit consent, recorded in `consents`; contact details stripped; nothing sent before confirm.
+- **Decision chain.** Structured, owned by the caller, no hidden reasoning stored. Classifier output (Claude or Jev) only chooses which permitted reads to run; it cannot unlock tools.
+- **Jev (optional).** Sends the question text only to TypeSafe (`api.typesafe.ai`), with an API key from a `chmod 600` file. Off by default. Review TypeSafe's terms before enabling for employee data.
+- **Untrusted content.** Policy passages and questions are wrapped `{ untrusted: true }`. Tested with injected instructions.
+- **Audit.** Postgres `audit_log`, free text redacted.

@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "verifiedAgainst": "REPLACE: tenant, upstream server name and version, date of contract check",
+  "capabilities": {
+    "identity": { "tool": "REPLACE_upstream_whoami_tool" },
+    "benefits_read": { "tool": "REPLACE_upstream_benefits_tool", "resultPath": "data" },
+    "policy_search": { "tool": "REPLACE_upstream_policy_tool", "args": { "query": { "from": "query" } } },
+    "transfer_eligibility": { "tool": "REPLACE_upstream_eligibility_tool", "args": { "position_id": { "from": "positionId" } } },
+    "transfer_submit": { "tool": "REPLACE_upstream_job_change_tool", "args": { "position_id": { "from": "positionId" }, "effective_date": { "from": "effectiveDate" }, "justification": { "from": "reason" }, "idempotency_key": { "from": "idempotencyKey" } } },
+    "transfer_status": { "tool": "REPLACE_upstream_job_change_lookup_tool", "args": { "idempotency_key": { "from": "idempotencyKey" } } }
+  }
+}

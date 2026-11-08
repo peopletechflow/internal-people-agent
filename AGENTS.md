@@ -6,3 +6,5 @@
 - Never mark a domain live in `src/adapters.ts` without the contract proof in docs/ARCHITECTURE.md.
 - Fixture data must stay obviously fictional and carry `example: true` on source refs.
 - No em dashes in docs or user-facing text.
+- New Workday data needs a capability in `src/capabilities.ts` with a strict output schema, a fixture handler, and a contract test against a test-double MCP server. Never call Workday APIs directly from tools.
+- Classifiers (Claude or Jev) may only choose intent. Never let their output change permissions or skip preview and confirm.

@@ -1,11 +1,12 @@
-# Handover
+# Handover: Internal People Agent | Workday MCP
 
-**Done:** fixture vertical slice for benefits, equity and policy answers with citations, transfer eligibility and request (preview, confirm, pending approval), PBP handoff with consent. 16 tests (`pnpm test`).
+**Done (v0.2):** upstream Workday MCP gateway, live identity and role map, Postgres store and migrations, unknown-outcome writes with reconcile, decision chain with optional Jev, fixture mode on the same contracts. 32 tests (`pnpm test`), all with fixture data or test doubles.
 
-**Not done, by design:** any live connector, per-user OAuth sign-in, durable store, remote HTTP transport.
+**Not verified:** any real tenant upstream tool, the `pg` driver against a real Postgres server (tests use PGlite), and any live Jev call.
 
-**Next steps, in order:**
-1. Pick one tenant and one domain (suggested: benefits read). Complete the contract proof in docs/ARCHITECTURE.md.
-2. Add per-user OAuth (reuse the upstream repo's PKCE flow and encrypted token store) and a durable store with migrations for previews, idempotency and audit.
-3. Implement that one live adapter behind the existing tool, keeping output shape and source refs.
-4. Only then consider the transfer business process, with tenant-specific validation.
+**Next steps:**
+1. Pick the upstream Workday MCP server for one tenant and run `list_hr_adapters` against a sandbox with a mapping for `identity` and `benefits_read`.
+2. Record the contract proof in docs/ARCHITECTURE.md and fill `verifiedAgainst`.
+3. Run the suite against a real Postgres (`DATABASE_URL`) before production.
+4. Add writes one at a time (transfer, then PBP case) with a status capability for reconcile.
+5. If you enable Jev, evaluate thresholds on real, consented sample questions.
