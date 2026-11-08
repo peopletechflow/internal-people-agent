@@ -1,11 +1,11 @@
 {
-  "name": "people-compass",
+  "name": "internal-people-agent",
   "version": "0.1.0",
-  "description": "People Compass: task-shaped MCP tools for an employee's own benefits, equity, policy answers, team-transfer requests and PBP handoffs. Fixture-tested; live connectors fail closed.",
+  "description": "Internal People Agent | Workday MCP: task-shaped MCP tools for an employee's own benefits, equity, policy answers, team-transfer requests and PBP handoffs. Fixture-tested; live connectors fail closed.",
   "type": "module",
   "private": true,
   "license": "MIT",
-  "bin": { "people-compass": "dist/index.js" },
+  "bin": { "internal-people-agent": "dist/index.js" },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit -p tsconfig.json",

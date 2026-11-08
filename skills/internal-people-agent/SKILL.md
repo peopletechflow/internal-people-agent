@@ -1,12 +1,14 @@
 ---
-name: people-compass
-description: Use when an employee asks about their own benefits, equity, HR policy, moving to another team, or getting help from their People Business Partner, and the People Compass MCP server is connected.
+name: internal-people-agent
+description: Workday MCP skill. Use when an employee asks about their own benefits, equity, HR policy, moving to another team, or getting help from their People Business Partner, and the Internal People Agent MCP server is connected.
 ---
 
-# People Compass
+# Internal People Agent | Workday MCP
+
+Internal People Agent runs as a Workday MCP server; this skill drives it. Fixture mode by default; it does not claim a live Workday connection.
 
 ## Setup
-Connect the `people-compass` MCP server (see README quick start). Call `list_hr_adapters` first and tell the user which domains are fixture-only. Do not describe fixture data as their real records.
+Connect the `internal-people-agent` MCP server (see README quick start). Call `list_hr_adapters` first and tell the user which domains are fixture-only. Do not describe fixture data as their real records.
 
 ## Answering questions
 1. Call `build_answer_pack` with the question and topics (benefits, equity, policy).

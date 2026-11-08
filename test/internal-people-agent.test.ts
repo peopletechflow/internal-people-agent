@@ -6,11 +6,11 @@ import { resolveCaller, type Caller } from "../src/core/identity.js";
 import { callTool, visibleTools, buildMcpServer } from "../src/core/tool.js";
 import { Audit } from "../src/core/audit.js";
 import { USERS } from "../src/fixtures/data.js";
-import { createPeopleCompass } from "../src/tools.js";
+import { createInternalPeopleAgent } from "../src/tools.js";
 
 const as = (u: string): Caller => resolveCaller("fixture", { FIXTURE_USER: u }, USERS);
 function setup(mode: "fixture" | "live" = "fixture") {
-  const app = createPeopleCompass(mode); const audit = new Audit();
+  const app = createInternalPeopleAgent(mode); const audit = new Audit();
   const call = async (u: string, name: string, args: unknown = {}) => callTool(app.tools, app.roles, audit, as(u), name, args);
   const ok = async (u: string, name: string, args: unknown = {}) => { const r = await call(u, name, args); assert.ok(r.ok, JSON.stringify(r)); return (r as { data: any }).data; };
   return { app, audit, call, ok };

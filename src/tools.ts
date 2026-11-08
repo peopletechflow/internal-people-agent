@@ -22,7 +22,7 @@ const HANDOFF_FIELDS = ["tenure_and_team", "benefit_elections", "equity_grants",
 type Proposal = { proposalId: string; tenantId: string; userId: string; version: number; content: { positionId: string; fromTeam: string; toTeam: string; effectiveDate: string; reason: string }; status: "draft" | "submitted_pending_approval"; bpRef?: string };
 type Handoff = { handoffId: string; tenantId: string; userId: string; version: number; content: { topic: string; pbpId: string; message: string; fields: Record<string, unknown>; consentedSensitiveFields: string[] }; status: "draft" | "queued_fixture" };
 
-export function createPeopleCompass(mode: Mode, opts: { now?: () => Date } = {}) {
+export function createInternalPeopleAgent(mode: Mode, opts: { now?: () => Date } = {}) {
   const now = opts.now ?? (() => new Date());
   const previews = new PreviewStore();
   const idem = new Idempotency();

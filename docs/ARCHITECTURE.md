@@ -1,4 +1,6 @@
-# Architecture
+# Architecture: Internal People Agent | Workday MCP
+
+This is a Workday MCP server (stdio). Setup: README quick start.
 
 ```
 MCP client (Claude) --stdio--> src/index.ts

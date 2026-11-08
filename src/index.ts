@@ -4,11 +4,11 @@ import { readMode, resolveCaller } from "./core/identity.js";
 import { buildMcpServer } from "./core/tool.js";
 import { Audit } from "./core/audit.js";
 import { USERS } from "./fixtures/data.js";
-import { createPeopleCompass } from "./tools.js";
+import { createInternalPeopleAgent } from "./tools.js";
 
 const mode = readMode(process.env);
 const caller = resolveCaller(mode, process.env, USERS); // live mode fails closed here
-const app = createPeopleCompass(mode);
-const server = buildMcpServer({ name: "people-compass", version: "0.1.0" }, app.tools, app.roles, new Audit(process.env.AUDIT_LOG_PATH), caller);
+const app = createInternalPeopleAgent(mode);
+const server = buildMcpServer({ name: "internal-people-agent", version: "0.1.0", title: "Internal People Agent | Workday MCP" }, app.tools, app.roles, new Audit(process.env.AUDIT_LOG_PATH), caller);
 await server.connect(new StdioServerTransport());
-process.stderr.write(`people-compass: ${mode} mode, caller ${caller.userId}\n`);
+process.stderr.write(`internal-people-agent: ${mode} mode, caller ${caller.userId}\n`);
