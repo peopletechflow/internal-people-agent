@@ -4,6 +4,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { readMode, resolveCaller } from "./core/identity.js";
 import { startLive, type Live } from "./core/live.js";
 import { agentReadyTools } from "./core/agent-tools.js";
+import { AGENT_CEILINGS } from "./agent-capabilities.js";
 import { buildMcpServer } from "./core/tool.js";
 import { migrate, openDb } from "./core/db.js";
 import { Store } from "./core/store.js";
@@ -23,7 +24,7 @@ const store = new Store(db);
 
 let backend: Backend; let caller; let live: Live | undefined;
 if (mode === "live") {
-  live = await startLive(env, CAPS);
+  live = await startLive(env, CAPS, AGENT_CEILINGS);
   backend = live.backend; caller = live.caller;
 } else {
   caller = resolveCaller(mode, env, USERS);
@@ -33,7 +34,7 @@ const classifier = env.DECISION_CLASSIFIER === "jev"
   ? await createJevClassifier({ apiKey: readSecretFile(env.TYPESAFE_API_KEY_FILE ?? "", "TYPESAFE_API_KEY_FILE"), model: env.TYPESAFE_MODEL })
   : undefined;
 const app = createPeopleAgent({ backend, store, classifier, jevMinConfidence: env.JEV_MIN_CONFIDENCE ? Number(env.JEV_MIN_CONFIDENCE) : undefined });
-if (live?.registry) app.tools.push(...agentReadyTools({ registry: live.registry, store, perms: { read: "pc.workday.read", draft: "pc.workday.propose", commit: "pc.workday.commit" }, workerId: live.workerIdFor }));
+if (live?.registry) app.tools.push(...agentReadyTools({ registry: live.registry, store, ceilings: AGENT_CEILINGS, listPermission: "pc.self.read", workerId: live.workerIdFor }));
 const server = buildMcpServer({ name: "internal-people-agent", version: "0.2.0", title: "Internal People Agent | Workday MCP" }, app.tools, app.roles, store, caller, list(env.DISABLED_TOOLS));
 await server.connect(new StdioServerTransport());
 process.stderr.write(`internal-people-agent (Workday MCP): ${mode} mode, classifier ${classifier ? "jev" : "client"}\n`);
