@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "approvedBy": "EXAMPLE - replace with the reviewer",
+  "approvedAt": "EXAMPLE",
+  "tenantAlias": "your_tenant_alias",
+  "agentClientId": "your_asor_agent_client_id",
+  "tools": [
+    {
+      "name": "EXAMPLE_NOT_A_REAL_TOOL_identity",
+      "fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "capability": "identity.self",
+      "subject": { "contextInstanceId": "me" },
+      "identity": { "workerIdPath": "data[].id", "attestedBy": "EXAMPLE - tenant admin who verified this returns only the signed-in worker", "attestedAt": "EXAMPLE" },
+      "note": "Placeholder. Names and fingerprints must come from `pnpm agent-tools:snapshot` against your tenant. This file loads but no tool will match, so every capability stays unavailable."
+    },
+    {
+      "name": "EXAMPLE_NOT_A_REAL_TOOL_benefits",
+      "fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "capability": "benefits.self.read",
+      "subject": { "worker": "caller" }
+    }
+  ]
+}

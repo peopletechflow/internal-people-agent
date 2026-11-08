@@ -8,3 +8,6 @@
 
 ## 0.1.0 (2026-11-08)
 - First release, fixture only, extracted from workday-mcp-schema at 4bf10b2.
+
+## Unreleased: Workday Agent Gateway alignment
+- Added Agent Gateway mode: ASU OAuth 2.1 + PKCE, paginated discovery with list_changed and TTL refresh and drift fail-closed, an approved tool policy, and the `workday_*` agent tools. Writes are re-checked for contract drift at commit. Fixed capability mappings are off on Agent Gateway endpoints. Production refuses fixtures, example config and fixed bearer tokens.
