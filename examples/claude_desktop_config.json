@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "people-compass": {
+      "command": "node",
+      "args": ["/ABSOLUTE/PATH/TO/people-compass/dist/index.js"],
+      "env": { "MODE": "fixture", "FIXTURE_USER": "emp_ava" }
+    }
+  }
+}
