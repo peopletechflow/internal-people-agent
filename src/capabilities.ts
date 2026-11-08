@@ -21,7 +21,7 @@ export const CAPS: Record<string, CapabilityDef> = {
   transfer_eligibility: { kind: "read", inputs: ["positionId"], description: "Caller's eligibility for an open position", output: z.object({
     eligible: z.boolean(), positionTitle: short(), toTeam: short(), fromTeam: short(),
     checks: z.array(z.object({ rule: short(300), pass: z.boolean(), policyRef: short(128).optional() }).strip()).max(20) }).strip() },
-  transfer_submit: { kind: "write", inputs: ["positionId", "effectiveDate", "reason", "idempotencyKey"], description: "Start the job-change business process for the caller", output: z.object({
+  transfer_submit: { kind: "write", inputs: ["positionId", "effectiveDate", "reason", "idempotencyKey"], description: "Start the job-change business process for the caller", denyTools: ["initiate_change_job"], output: z.object({
     requestRef: short(128), status: z.enum(["submitted", "pending_approval", "in_progress"]) }).strip() },
   transfer_status: { kind: "read", inputs: ["idempotencyKey"], description: "Find a transfer request by idempotency key", output: z.object({
     found: z.boolean(), requestRef: short(128).optional(), status: short(40).optional() }).strip() },

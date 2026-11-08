@@ -1,5 +1,8 @@
 # Internal People Agent | Workday MCP
 
+> **Status: experimental.** This is an independent project and is not affiliated with or endorsed by Workday. It has not been run against a production Workday tenant, and live adapters only work for capabilities your tenant mapping verifies (everything else is gated). Fixture data is invented. Security: see [SECURITY.md](SECURITY.md). Contributing: see [CONTRIBUTING.md](CONTRIBUTING.md). CI is a template in `docs/ci-workflow.example.yml` and is not active until it is installed.
+
+
 An independent, task-shaped **Workday MCP** server and Claude skill. Not affiliated with, endorsed by, or certified by Workday, Inc.; Workday is a trademark of Workday, Inc.
 
 Employees ask about **their own** benefits, equity and HR policy and get cited answers, request a **team transfer** through the approval process, and hand off to their **People Business Partner (PBP)** with minimal, consented data. Every request runs through an **auditable decision chain**.

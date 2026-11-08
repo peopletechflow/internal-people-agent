@@ -148,3 +148,23 @@ test("Streamable HTTP transport sends the caller's bearer token (loopback test d
   } finally { srv.close(); }
   await assert.rejects(connectUpstream({ url: "http://example.com/mcp", accessToken: "x" }), /https/);
 });
+
+test("transfer write cannot be backed by a manager/HR tool or pinned to another worker", async () => {
+  const server = new McpServer({ name: "up", version: "0" });
+  for (const n of ["initiate_change_job", "self_transfer"]) server.tool(n, "", { workerId: z.string().optional(), positionId: z.string(), effectiveDate: z.string(), reason: z.string() }, async () => ({ content: [{ type: "text", text: "{}" }] }));
+  const [a, b] = InMemoryTransport.createLinkedPair(); await server.connect(a);
+  const up = await connectUpstream({ transport: b });
+  const args = { positionId: { from: "positionId" }, effectiveDate: { from: "effectiveDate" }, reason: { from: "reason" } };
+  const g1 = await Gateway.create(up, MappingFile.parse({ version: 1, capabilities: { transfer_submit: { tool: "initiate_change_job", args } } }), CAPS);
+  assert.match(g1.capabilities().find((s) => s.capability === "transfer_submit")!.reason!, /not allowed/);
+  const g2 = await Gateway.create(up, MappingFile.parse({ version: 1, capabilities: { transfer_submit: { tool: "self_transfer", args: { ...args, workerId: { const: "W-OTHER" } } } } }), CAPS);
+  assert.match(g2.capabilities().find((s) => s.capability === "transfer_submit")!.reason!, /constant/);
+  await up.close();
+});
+
+test("identity without tenant uses WORKDAY_TENANT; mismatch refuses", async () => {
+  const { withTenant } = await import("../src/core/identity.js");
+  assert.deepEqual(withTenant({ workerId: "W1" }, "t1"), { tenantId: "t1", workerId: "W1" });
+  assert.throws(() => withTenant({ workerId: "W1", tenantId: "t2" }, "t1"), /does not match/);
+  assert.throws(() => withTenant({ workerId: "W1" }), /no tenant/);
+});

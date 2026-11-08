@@ -17,7 +17,7 @@ export interface IntentClassifier { readonly name: "jev"; classify(question: str
 export const SystemOneAnswers = z.object({
   model: z.string(),
   answers: z.object({
-    intent: z.object({ type: z.literal("choice"), choice: z.string(), confidence: z.number().min(0).max(1), probabilities: z.record(z.number()) }).passthrough(),
+    intent: z.object({ type: z.literal("choice"), choice: z.string(), confidence: z.number().min(0).max(1), probabilities: z.record(z.string(), z.number()) }).passthrough(),
     any_fit: z.object({ type: z.literal("noul"), noul: z.number().min(0).max(1) }).passthrough(),
     sensitive: z.object({ type: z.literal("noul"), noul: z.number().min(0).max(1) }).passthrough(),
   }).passthrough(),
