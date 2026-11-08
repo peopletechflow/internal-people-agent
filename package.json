@@ -1,7 +1,7 @@
 {
   "name": "internal-people-agent",
   "version": "0.2.0",
-  "description": "Internal People Agent | Workday MCP: task-shaped MCP tools for an employee's own benefits, equity, policy answers, team-transfer requests and PBP handoffs. Fixture-tested; live connectors fail closed.",
+  "description": "Internal People Agent | Workday MCP: task-shaped tools over your upstream Workday MCP server for your own benefits, equity, policy answers, team-transfer requests and consented PBP handoffs, with an auditable decision chain (Claude default, Jev optional). Tested with fixtures and test doubles; no tenant verified yet.",
   "type": "module",
   "private": true,
   "license": "MIT",
