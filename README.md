@@ -9,7 +9,9 @@ Employees ask about **their own** benefits, equity and HR policy and get cited a
 
 ## Demo
 
-[![Internal People Agent · Workday MCP demo](docs/media/internal-people-agent-demo-poster.png)](docs/media/internal-people-agent-demo.mp4)
+[![Internal People Agent · Workday MCP demo](docs/media/internal-people-agent-demo-poster.png)](https://vimeo.com/1245051339)
+
+[Watch on Vimeo](https://vimeo.com/1245051339)
 
 Real footage of the Internal People Agent · Workday MCP answering two read-only prompts against the signed-in user's own benefits records in a Workday developer sandbox. The agent returns a grounded answer with sources and what remains unknown, then drafts a People Business Partner handoff for review that is never sent.
 
