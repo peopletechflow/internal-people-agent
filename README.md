@@ -1,6 +1,10 @@
 # Internal People Agent | Workday MCP
 
-> **Status: experimental.** This is an independent project and is not affiliated with or endorsed by Workday. It has not been run against a production Workday tenant, and live adapters only work for capabilities your tenant mapping verifies (everything else is gated). Fixture data is invented. Security: see [SECURITY.md](SECURITY.md). Contributing: see [CONTRIBUTING.md](CONTRIBUTING.md). CI is a template in `docs/ci-workflow.example.yml` and is not active until it is installed.
+> **Security.** Self-scoped reads only: the agent answers from the signed-in employee's own Workday records. Live adapters stay gated until your tenant mapping verifies each capability. See [SECURITY.md](SECURITY.md) for the security model and how to report a vulnerability.
+>
+> **Contributing.** Pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+>
+> **Scope.** Independent project, not affiliated with or endorsed by Workday. Verified live in a Workday developer sandbox (read-only prompts against the signed-in user's own benefits records). Not yet run against a production Workday tenant. Fixture data is invented. CI is a template in `docs/ci-workflow.example.yml` and is not active until it is installed.
 
 
 An independent, task-shaped **Workday MCP** server and Claude skill. Not affiliated with, endorsed by, or certified by Workday, Inc.; Workday is a trademark of Workday, Inc.
@@ -9,7 +13,7 @@ Employees ask about **their own** benefits, equity and HR policy and get cited a
 
 ## Demo
 
-[![Internal People Agent · Workday MCP demo](docs/media/internal-people-agent-demo-poster.png)](https://vimeo.com/1245051339)
+[![Internal People Agent · Workday MCP demo](docs/media/internal-people-agent-demo.gif)](https://vimeo.com/1245051339)
 
 [Watch on Vimeo](https://vimeo.com/1245051339)
 
@@ -74,6 +78,12 @@ Claude Desktop: `pnpm build`, then use `examples/claude_desktop_config.json` and
 
 ## CI
 A workflow is ready in `docs/ci-workflow.example.yml`. Move it to `.github/workflows/ci.yml` from an account with the `workflow` permission.
+
+## License and disclaimer
+
+MIT. See [LICENSE](LICENSE).
+
+This software is provided as is, without warranty of any kind. The maintainers and PeopleTech Flow B.V. accept no responsibility or liability for any use, data, HR decisions, or outcomes. You are responsible for reviewing, securing, and testing it in your own tenant and for complying with your Workday agreements and applicable law.
 
 ## Workday Agent Gateway mode (the documented Workday path)
 
