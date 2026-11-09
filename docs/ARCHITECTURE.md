@@ -33,3 +33,33 @@ Stored as a `decision_chain` resource owned by the caller. Steps are structured 
 2. Recorded non-production response matches our output schema; record the upstream server version in `verifiedAgainst`.
 3. For writes: it starts the Workday business process (not a direct data change), honors the idempotency key or exposes a lookup for the status capability, and documents its error shape.
 Known: the upstream repo workday-mcp-schema currently exposes only time-off tools, so none of these capabilities can be mapped to it today.
+
+## Status
+| | Implemented and tested | Live tenant verified |
+| --- | --- | --- |
+| Upstream Workday MCP client (official SDK, tools/list check, strict response schemas, per-user bearer token) | yes, against test-double MCP servers (in-memory and loopback HTTP) | **no** |
+| Identity from upstream `identity` capability, roles from role map | yes | **no** |
+| Durable Postgres state with migrations; unknown-outcome writes and reconcile | yes (PGlite, the Postgres engine in WASM; `pg` driver path not run in CI) | **no** |
+| Decision chain (Claude intent by default, Jev optional) | yes (Jev against a test double of the published API) | Jev: **no live call made** |
+| Fixture mode (example data, same contracts) | yes | n/a |
+
+## Capabilities (each one is gated until mapped and verified)
+| Capability | Tools | Fixture | Live |
+| --- | --- | --- | --- |
+| `identity` (required to start live) | all | example users | via mapped upstream tool |
+| `benefits_read` | `get_my_benefits`, answer packs | yes | when mapped |
+| `equity_read` | `get_my_equity`, answer packs | yes | when mapped (often a separate equity platform behind your Workday MCP) |
+| `policy_search` | `search_hr_policy`, answer packs | yes | when mapped |
+| `transfer_eligibility` | `check_my_transfer_eligibility`, preview | yes | when mapped |
+| `transfer_submit`, `transfer_status` | `commit_team_transfer_request`, `reconcile_my_transfer_request` | yes | when mapped; starts the business process, never completes a transfer |
+| `pbp_case_create`, `pbp_case_status` | `commit_pbp_handoff`, `reconcile_my_pbp_handoff` | yes | when mapped |
+
+`list_hr_adapters` shows, per capability, whether it is available and why not.
+
+## Decision chain steps
+`start_decision_chain` records, per request: `identity_scope` -> `intent` -> `permitted_retrieval` -> `grounding` -> `answer_or_preview` -> `confirmation_or_escalation`, each with a status, a short reason and evidence refs (source ids, digests). Preview and commit tools append steps when given `decisionChainId`. It records decisions and their evidence, not model reasoning text.
+
+**Default:** Claude classifies intent and passes it. **Optional Jev:** set `DECISION_CLASSIFIER=jev`. Jev is TypeSafe's System One model: it answers typed questions (a Choice for intent, Nouls for "fits scope" and "contains sensitive details") with probabilities and confidence. It does not write answers, call tools or chat, so Claude still drafts every answer. Low confidence, disagreement with Claude, or an API error makes the chain stop and ask the user. Jev output never grants permissions.
+
+## Provenance
+`src/core/` adapts security ideas from `peopletechflow/workday-mcp-schema` at `4bf10b27b025a48b0882d98ab65983fdba271159` (MIT, same owner): preview then commit, idempotency, audit redaction, deny-wins roles, Postgres migrations. Rewritten here with durable bound previews and explicit unknown outcomes. That repository is unchanged.
