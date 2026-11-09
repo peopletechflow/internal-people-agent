@@ -7,6 +7,12 @@ An independent, task-shaped **Workday MCP** server and Claude skill. Not affilia
 
 Employees ask about **their own** benefits, equity and HR policy and get cited answers, request a **team transfer** through the approval process, and hand off to their **People Business Partner (PBP)** with minimal, consented data. Every request runs through an **auditable decision chain**.
 
+## Demo
+
+[![Internal People Agent · Workday MCP demo](docs/media/internal-people-agent-demo-poster.png)](docs/media/internal-people-agent-demo.mp4)
+
+Real footage of the Internal People Agent · Workday MCP answering two read-only prompts against the signed-in user's own benefits records in a Workday developer sandbox. The agent returns a grounded answer with sources and what remains unknown, then drafts a People Business Partner handoff for review that is never sent.
+
 ## How it connects
 ```
 Claude (default runtime) --stdio MCP--> Internal People Agent --MCP (Streamable HTTP, your token)--> your upstream Workday MCP server
