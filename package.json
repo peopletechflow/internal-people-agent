@@ -24,7 +24,7 @@
   },
   "packageManager": "pnpm@10.12.4",
   "dependencies": {
-    "@electric-sql/pglite": "^0.5.15",
+    "@electric-sql/pglite": "^0.5.16",
     "@modelcontextprotocol/sdk": "^1.32.1",
     "@typesafe-ai/sdk": "0.7.0",
     "ajv": "^8.20.0",
